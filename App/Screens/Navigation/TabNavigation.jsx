@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../HomeScreen/HomeScreen";
 import FavouriteScreen from "../FavouriteScreen/FavouriteScreen";
 import ProfileScreen from "../ProfileScreen/ProfileScreen";
-import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
+import {  FontAwesome, Ionicons } from "@expo/vector-icons";
 import Colors from "../../Utils/Colors";
 
 const Tab = createBottomTabNavigator();
@@ -16,8 +16,9 @@ export default function TabNavigation() {
         component={HomeScreen}
         options={{
             // tabBarActiveTintColor:Colors.PRIMARY,
+            tabBarLabel:'Search',
             tabBarIcon: ({ color, size }) => (
-            <Entypo name="home" size={size} color={color} />
+            <FontAwesome name="search" size={size} color={color} />
           ),
         }}
       />
