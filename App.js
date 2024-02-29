@@ -3,11 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import LoginScreen from './App/Screens/LoginScreen';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ClerkProvider, SignedIn, SignedOut} from '@clerk/clerk-expo';
 import * as SecureStore from "expo-secure-store";
 import { NavigationContainer } from '@react-navigation/native';
 import TabNavigation from './App/Screens/Navigation/TabNavigation';
+import * as Location from 'expo-location';
+import { UserLocationContext } from './App/Context/UserLocationContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -30,6 +32,31 @@ const tokenCache = {
 
 export default function App() {
 
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location.coords);
+      console.log(location);
+    })();
+  }, []);
+
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+
   const [fontsLoaded, fontError] = useFonts({
     'Outfit': require('./assets/Fonts/Outfit-Regular.ttf'),
     'Outfit-Bold': require('./assets/Fonts/Outfit-Bold.ttf'),
@@ -50,6 +77,7 @@ export default function App() {
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={'pk_test_cHJlY2lvdXMtdW5pY29ybi05Ny5jbGVyay5hY2NvdW50cy5kZXYk'}>
     <View style={styles.container} onLayout={onLayoutRootView}>
+    <UserLocationContext.Provider value={{location,setLocation}}>
       <SignedIn>
         <NavigationContainer>
           <TabNavigation/>
@@ -60,6 +88,7 @@ export default function App() {
       </SignedOut>
 
       <StatusBar style="auto" />
+    </UserLocationContext.Provider>
     </View>
     </ClerkProvider>
   );
