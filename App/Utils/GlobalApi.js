@@ -1,6 +1,7 @@
 import axios from "axios";
+// require('dotenv').config();
 const BASE_URL = 'https://places.googleapis.com/v1/places:searchNearby';
-const API_KEY = "AIzaSyAqHuPCA3J6s-f1r9h6-2JwjRQuojaVnWc";
+const API_KEY = process.env.GOOGLE_API_KEY;
 
 const config = {
   headers: {

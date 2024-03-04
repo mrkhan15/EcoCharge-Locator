@@ -13,6 +13,8 @@ export default function PlaceItem({place}) {
       <Image source={require('./../../../assets/Images/ev-car.jpg')}
       style={{width:'100%', borderRadius:10, height:130}}
       />
+
+      <View></View>
     </View>
   )
 }

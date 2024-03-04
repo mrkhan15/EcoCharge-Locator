@@ -14,7 +14,7 @@ export default function SearchBar() {
         console.log(data, details);
       }}
       query={{
-        key: 'AIzaSyAqHuPCA3J6s-f1r9h6-2JwjRQuojaVnWc',
+        key: process.env.GOOGLE_API_KEY,
         language: 'en',
       }}
     />
